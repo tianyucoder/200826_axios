@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>axios的基本使用</title>
+		<script type="text/javascript" src="./js/axios.min.js"></script>
+	</head>
+	<body>
+		<button id="btn1">点我获取所有人的信息</button>
+		<!-- 
+				1.axios调用的返回值是Promise实例。
+				2.成功的值叫response，失败的值叫error。
+				3.axios成功的值是一个axios封装的response对象，服务器返回的真正数据在response.data中
+		 -->
+
+		<script type="text/javascript" >
+			//获取按钮
+			const btn1 = document.getElementById('btn1')
+
+			//发送GET请求---不携带参数
+			btn1.onclick = ()=>{
+				axios({
+					url:'http://localhost:5000/persons', //请求地址
+					method:'GET',//请求方式
+				}).then(
+					response => {console.log('请求成功了',response.data);},
+					error => {console.log('请求失败了',error);}
+				)
+			}
+		</script>
+	</body>
+</html>
