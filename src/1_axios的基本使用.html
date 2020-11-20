@@ -6,25 +6,133 @@
 		<script type="text/javascript" src="./js/axios.min.js"></script>
 	</head>
 	<body>
-		<button id="btn1">点我获取所有人的信息</button>
+		<button id="btn1">点我获取所有人</button><br/><br/>
+		<button id="btn2">点我获取某个人</button>
+		<input id="person_id" type="text" placeholder="请输入一个人的id"><br/><br/>
+		<button id="btn3">点我添加一个人</button>
+		<input id="person_name" type="text" placeholder="请输入名字">
+		<input id="person_age" type="text" placeholder="请输入年龄"><br/><br/>
+		<button id="btn4">点我更新一个人</button>
+		<input id="person_update_id" type="text" placeholder="请输入一个人的id">
+		<input id="person_update_name" type="text" placeholder="请输入名字">
+		<input id="person_update_age" type="text" placeholder="请输入年龄"><br/><br/>
+		<button id="btn5">点我删除一个人</button>
+		<input id="person_delete_id" type="text" placeholder="请输入删除的id">
 		<!-- 
 				1.axios调用的返回值是Promise实例。
 				2.成功的值叫response，失败的值叫error。
 				3.axios成功的值是一个axios封装的response对象，服务器返回的真正数据在response.data中
+				4.携带query参数时，编写的配置项叫做params
+				5.携带params参数时，就需要自己手动拼在url中
 		 -->
 
 		<script type="text/javascript" >
 			//获取按钮
 			const btn1 = document.getElementById('btn1')
+			const btn2 = document.getElementById('btn2')
+			const btn3 = document.getElementById('btn3')
+			const btn4 = document.getElementById('btn4')
+			const btn5 = document.getElementById('btn5')
+			const personId = document.getElementById('person_id')
+			const personName = document.getElementById('person_name')
+			const personAge = document.getElementById('person_age')
+			const personUpdateId = document.getElementById('person_update_id')
+			const personUpdateName = document.getElementById('person_update_name')
+			const personUpdateAge = document.getElementById('person_update_age')
+			const personDeleteId = document.getElementById('person_delete_id')
 
-			//发送GET请求---不携带参数
+			//获取所有人---发送GET请求---不携带参数
 			btn1.onclick = ()=>{
-				axios({
+				//完整版
+				/* axios({
 					url:'http://localhost:5000/persons', //请求地址
 					method:'GET',//请求方式
 				}).then(
 					response => {console.log('请求成功了',response.data);},
 					error => {console.log('请求失败了',error);}
+				) */
+
+				//精简版
+				axios.get('http://localhost:5000/persons').then(
+					response => {console.log('请求成功了',response.data);},
+					error => {console.log('请求失败了',error);}
+				)
+			}
+			
+			//获取所某个人---发送GET请求---携带query参数
+			btn2.onclick = ()=>{
+				//完整版
+				/* axios({
+					url:'http://localhost:5000/person',
+					method:'GET',
+					params:{id:personId.value} //此处写的是params，但携带的是query参数
+				}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				) */
+
+				//精简版
+				axios.get('http://localhost:5000/person',{params:{id:personId.value}}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				)
+			}
+			
+			//添加一个人---发送POST请求---携带json编码参数 或 urlencoded编码
+			btn3.onclick = ()=>{
+				//完整版
+				/* axios({
+					url:'http://localhost:5000/person',
+					method:'POST',
+					data:{name:personName.value,age:personAge.value}//携带请求体参数（json编码）
+					//data:`name=${personName.value}&age=${personAge.value}`//携带请求体参数（urlencoded编码）
+				}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				) */
+
+				//精简版
+				axios.post('http://localhost:5000/person',`name=${personName.value}&age=${personAge.value}`).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				)
+			}
+
+			//更新一个人---发送PUT请求---携带json编码参数 或 urlencoded编码
+			btn4.onclick = ()=>{
+				//完整版
+				/* axios({
+					url:'http://localhost:5000/person',
+					method:'PUT',
+					data:{
+						id:personUpdateId.value,
+						name:personUpdateName.value,
+						age:personUpdateAge.value
+					}
+				}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				) */
+
+				//精简版
+				axios.put('http://localhost:5000/person',{
+					id:personUpdateId.value,
+					name:personUpdateName.value,
+					age:personUpdateAge.value
+				}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
+				)
+			}
+			
+			//删除一个人---发送DELETE请求---携带params参数
+			btn5.onclick = ()=>{
+				axios({
+					url:`http://localhost:5000/person/${personDeleteId.value}`,
+					method:'DELETE',
+				}).then(
+					response => {console.log('成功了',response.data);},
+					error => {console.log('失败了',error);}
 				)
 			}
 		</script>
