@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>8_axios批量发送请求</title>
+		<script type="text/javascript" src="./js/axios.min.js"></script>
+	</head>
+	<body>
+		<button id="btn">点我批量发送请求</button><br/><br/>
+		<script type="text/javascript" >
+			const btn = document.getElementById('btn')
+
+			btn.onclick = async()=>{
+				axios.all([
+					axios.get('http://localhost:5000/test1'),
+					axios.get('http://localhost:5000/test2?delay=3000'),
+					axios.get('http://localhost:5000/test3'),
+				]).then(
+					response => {console.log(response);},
+					error => {console.log(error);}
+				)
+			}
+		</script>
+	</body>
+</html>
